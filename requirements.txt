@@ -1,0 +1,8 @@
+numpy>=1.26
+pandas>=2.0
+matplotlib>=3.8
+wordcloud>=1.9
+scikit-learn>=1.4
+streamlit>=1.35
+gdown>=5.0
+pytest>=8.0
