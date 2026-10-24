@@ -19,7 +19,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from ngram import pipeline  # noqa: E402
 from ngram.generate import Suggester  # noqa: E402
 from ngram.models import make_model  # noqa: E402
-from ngram.normalize import normalize_chars, tokenize  # noqa: E402
+from ngram.normalize import NUM, normalize_chars, tokenize  # noqa: E402
 
 
 def parse_args():
@@ -68,15 +68,17 @@ def main():
     st.caption(f"history used: {' '.join(history) or '(none)'}"
                + (f" · completing: “{partial}”" if partial else ""))
 
-    suggestions = suggesters[n].suggest(words, k=k, partial=partial)
+    # Number placeholders such as "በ<num>" are not words a user can accept.
+    suggestions = [(w, p) for w, p in suggesters[n].suggest(words, k=k + 5, partial=partial)
+                   if NUM not in w][:k]
     if not suggestions:
         st.info("No candidates for this prefix.")
         return
     cols = st.columns(len(suggestions))
     for col, (w, _) in zip(cols, suggestions):
-        col.button(w, on_click=accept, args=(w,), use_container_width=True)
+        col.button(w, on_click=accept, args=(w,), width="stretch")
     st.dataframe(pd.DataFrame(suggestions, columns=["word", "P(word | history)"]),
-                 hide_index=True, use_container_width=True)
+                 hide_index=True, width="stretch")
 
 
 if __name__ == "__main__":
