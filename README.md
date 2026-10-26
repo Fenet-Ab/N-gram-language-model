@@ -15,7 +15,13 @@ are in [`docs/dev_plans/amharic_ngram_language_models.md`](docs/dev_plans/amhari
 
 ```bash
 python -m venv .venv && .venv/bin/pip install -r requirements.txt
-```
+`````
+
+## TO RUN THE PROJECT
+source .venv/bin/activate
+streamlit run app/streamlit_app.py -- --model-dir data/gpac --order 3
+
+
 
 Put the corpus at `data/GPAC.txt`. A directory of `.txt` files or a `.zip` also works; set
 `CORPUS` in the notebook setup cell. Counting streams the corpus from disk in key-range
@@ -24,8 +30,8 @@ partitions and drops 3- and 4-grams seen once. The full corpus (77M tokens) buil
 `MAX_CHARS` for a smaller run.
 
 ```bash
-python scripts/build_model.py --corpus data/GPAC.txt --out data/gpac --order 4   # optional; notebook 1 does this
-streamlit run app/streamlit_app.py -- --model-dir data/gpac --order 3       # after notebook 4
+python scripts/build_model.py --corpus data/GPAC.txt --out data/gpac --order 4  
+streamlit run app/streamlit_app.py -- --model-dir data/gpac --order 3     
 pytest
 ```
 
